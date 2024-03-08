@@ -1,0 +1,43 @@
+@import './modules/universals.scss';
+@import './modules/variables.scss';
+
+.section_header{
+    display: flex;
+    flex-direction: column;
+    background-color:$secundary-color;;
+}
+
+.search{
+    display:flex;
+    
+    background-color:$third-color;
+    height: 49px;
+    max-width: 100%;
+    align-items: center;
+
+    form{
+        
+        padding-top: 3px;
+        width:100%;
+    }
+  
+  
+}
+.image_profile {
+    height: 3.68em;
+    
+}
+.image_profile img{
+    margin-left: 1.2em;
+    margin-top: 0.3em;
+    border-radius: 50%;
+    
+    
+}
+
+#Home_aside{
+    display:flex;
+    flex-direction: column;
+    width: 40%;
+    height: 100vh;
+}
