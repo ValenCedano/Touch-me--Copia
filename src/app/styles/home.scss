@@ -1,34 +1,133 @@
 @import './modules/universals.scss';
 @import './modules/variables.scss';
 
+
 .section_header{
     display: flex;
     flex-direction: column;
     background-color:$secundary-color;;
+
+    p{
+        display:none;
+    }
 }
 
 .search{
     display:flex;
-    
+    flex-direction:row;
     background-color:$third-color;
     height: 49px;
     max-width: 100%;
     align-items: center;
 
+    .chat-input{
+        text-align: center;
+        background-color: aliceblue;
+    }
+
     form{
-        
+        display: inline-flex;
         padding-top: 3px;
-        width:100%;
+        width: 100%;
+        justify-content: center;
+        
+
+        input{
+            border: 1.4px solid rgba(95, 25, 95, 0.847);
+            border-radius: 15px;
+            width: 90%;
+            padding: 4px;
+            margin-left: -10px;
+
+        }
+        button{
+            border-color: none;
+            border-style: hidden;
+            background-color:aliceblue;
+            margin-top: 1.4px;
+            margin-left: -30px;
+            height: 23px;
+            
+        }
     }
   
   
 }
+
+
+.section_contenido {
+    display: flex;
+    flex-direction: row;
+
+    figure img{
+        margin-left: 1.4em;
+        border-radius: 50%;
+        margin-top: 0.3em;
+
+    }
+    .contenedor2 {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        max-width: 100%;
+        justify-content: center;
+        margin-left: 1em;
+
+
+        .informacionPersona{
+            display: inline-flex;
+            align-items: center;
+            align-content: center;
+            justify-content: space-between;
+            margin-right: 1em;
+
+            p{
+                font-family:$typography-body;
+            }
+
+            h6 {
+                font-family:$typography-body;
+                font-size:small;
+                font-weight: 400;
+                color: gray;
+            }
+            
+        }
+
+        .informacionChat{
+            display: flex;
+            width: 100%;
+            flex-direction: row;
+            padding-right: 1em;
+            justify-content: flex-start;
+            align-items: center;
+
+            h6 {
+                margin-left: 1em;
+                font-family:$typography-body;
+                font-size: small;
+            }
+
+            figure{
+                color:violet;
+            }
+        }
+    }
+    
+}
+
+.section_contenido:hover{
+    background-color:rgba(246, 232, 252, 0.833);
+    
+}
+
+
 .image_profile {
     height: 3.68em;
     
 }
 .image_profile img{
-    margin-left: 1.2em;
+    margin-left: 1.4em;
     margin-top: 0.3em;
     border-radius: 50%;
     
@@ -40,4 +139,61 @@
     flex-direction: column;
     width: 40%;
     height: 100vh;
+}
+
+
+/* Parte Modal*/
+#btnCard{
+    cursor: pointer;
+}
+.modalCart{
+  display:flex;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  justify-content: flex-end;
+  position: fixed;
+  top:0;
+  left: 0;
+  width: 100%;
+  height:100%;
+  background-color: #05050549;
+  visibility: hidden;
+}
+
+.modalCart section{
+  width: 480px;
+  background-color: white;
+  height: max-content;
+  align-content: center;
+}
+
+.contenidoModal .encabezadoModal{
+    display: flex;
+    flex-direction: row;
+    justify-content:space-between;
+
+    
+}
+  
+  
+.contenidoModal div{
+    display: flex;
+    flex-direction: column;
+}
+
+@media screen and (max-width: 450px){
+    #Home_aside {
+        width: 100%;
+    }
+
+    .section_header{
+        p{
+            display: block;
+            font-family: $typography-body;
+            font-size:medium;
+            background-color: white;
+            padding: 3px;
+            text-align: center;
+        }
+    }
 }
