@@ -1,7 +1,6 @@
 {
   "name": "touch-me--copia",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "start": "webpack --mode development",
@@ -27,8 +26,16 @@
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^5.0.2"
   },
-
   "dependencies": {
     "axios": "^1.6.7"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ValenCedano/Touch-me--Copia.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ValenCedano/Touch-me--Copia/issues"
+  },
+  "homepage": "https://github.com/ValenCedano/Touch-me--Copia#readme",
+  "description": ""
 }
