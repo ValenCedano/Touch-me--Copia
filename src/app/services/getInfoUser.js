@@ -11,7 +11,7 @@ export const getUser = async () => {
   }
 };
 
-/*
+
 export const getUserChat = async () => {
     try {
       const { data } = await axios.get(endpoints.chats);
@@ -20,8 +20,8 @@ export const getUserChat = async () => {
       console.error(error);
       return [];
     }
-  };
-*/
+};
+
 
 
 
