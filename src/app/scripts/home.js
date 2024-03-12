@@ -1,5 +1,5 @@
 import '../styles/home.scss';
-import './modalEdition'
+import './modalEdition';
 import {
     getUser,
     getUserChat,
@@ -17,10 +17,10 @@ console.log(section_chats);
 
 const insertarImagenPerfil= (url) => {
     const figura = document.createElement('figure');
+    figura.id = 'btnCard';
     const imagen = document.createElement('img');
-    imagen.className = "btnCard";
     imagen.src = url;
-    
+    imagen.id = 'btnCard';
     imagen.alt = 'Imagen secundaria';
     figura.appendChild(imagen);
     image_profile.appendChild(figura);
@@ -94,7 +94,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     }else {
         insertarChats(section_chats,chat2,user2);
-    }
+    };
 
 
     

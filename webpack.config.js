@@ -81,7 +81,7 @@ module.exports = {
         removeStyleLinkTypeAttributes: true,
         useShortDoctype: true,
       },
-      chunks: ["home", "modal"]
+      chunks: ["home"],
     }),
   ],
 };
