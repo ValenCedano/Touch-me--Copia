@@ -7,6 +7,7 @@ module.exports = {
     login: "./src/app/scripts/index.js",
     register: "./src/app/scripts/register.js",
     home: "./src/app/scripts/home.js",
+    modal: "./src/app/scripts/modalEdition.js",
   },
   output: {
     filename: "[name].js",
@@ -80,7 +81,7 @@ module.exports = {
         removeStyleLinkTypeAttributes: true,
         useShortDoctype: true,
       },
-      chunks: ["home"],
+      chunks: ["home", "modal"]
     }),
   ],
 };

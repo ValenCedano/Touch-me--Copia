@@ -178,19 +178,14 @@
   align-content: center;
 }
 
-.contenidoModal .encabezadoModal{
-    display: flex;
-    flex-direction: row;
-    justify-content:space-between;
+.hidden {
+    display: none;
+}
 
-    
-}
-  
-  
-.contenidoModal div{
+.show {
     display: flex;
-    flex-direction: column;
 }
+
 
 @media screen and (max-width: 450px){
     #Home_aside {
