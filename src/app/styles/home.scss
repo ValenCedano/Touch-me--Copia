@@ -166,28 +166,112 @@
 
 
 /* Parte Modal*/
-#btnCard{
-    cursor: pointer;
-}
+
 .modalCart{
   display:flex;
   overflow-y: scroll;
   overflow-x: hidden;
-  justify-content: flex-end;
+  justify-content: flex-start;
   position: fixed;
   top:0;
   left: 0;
   width: 100%;
   height:100%;
   background-color: #05050549;
-  visibility: hidden;
+ 
 }
 
 .modalCart section{
-  width: 480px;
+  width: 40%;
+  height: 100%;
   background-color: white;
-  height: max-content;
-  align-content: center;
+  display:flex;
+  flex-direction: column;
+  justify-content: left;
+}
+
+.encabezadoModal{
+    height: 87px;
+    display:flex;
+    align-items: flex-end;
+    background-color: $secundary-color;
+    span {
+        font-family: $typography-title;
+        font-weight: 600;
+        font-size: x-large;
+    }
+    button{
+        width: auto;
+        margin-bottom:5px;
+        padding: 0%;
+        background-color: transparent;
+        border-style: none;
+        .fa-solid , .fa-arrow-right{
+            transform: scaleX(-1);
+            width: 58px;
+            font-size: x-large;
+           
+        }
+        
+    }
+}
+
+.cuerpoModal{
+    background-color: ghostwhite;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    width: 100%;
+    height: 100vh;
+    
+    justify-content: flex-start;
+
+    img{
+        border-radius: 50%;
+        margin-top: 2em;
+        width: 220px;
+        height: 220px;
+        align-items: center;
+        align-content: center;
+        align-self: center;
+    }
+    
+    h4{
+        font-family: $typography-body;
+        margin: 0.7em;
+    }
+    .modificarNombre{
+        display: flex;
+        flex-direction: column;
+        margin-top: 3em;
+        background-color: rgb(146 97 135 / 18%);
+        /* border-radius: 38px 45px 47px 39px; */
+        height: 5.5em;
+        
+        .edicion {
+            display:flex;
+            flex-direction: row;
+            justify-content: space-between;
+
+            p{
+                font-family: $typography-body;
+                margin-left: 0.7em;
+            }
+
+            button{
+                background-color: transparent;
+                width: 30px;
+                height: 30px;
+                border-style: none;
+                font-size: larger;
+                margin-right: 0.1em;
+    
+            }
+
+        };
+
+        
+    };
 }
 
 .hidden {

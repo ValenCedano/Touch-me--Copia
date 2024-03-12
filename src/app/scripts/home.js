@@ -1,26 +1,31 @@
 import '../styles/home.scss';
-import './modalEdition';
 import {
     getUser,
     getUserChat,
 }from "../services/getInfoUser";
+
+import {
+    toggleModal,
+}from "../services/modalEdition";
+
 const { DateTime } = require("luxon");
 
 //const idProducto = JSON.parse(localStorage.getItem("idProduct"))
 let user;
 let chat;
 const idUser = "13e45i";
+
 const image_profile = document.querySelector(".image_profile");
 const section_chats = document.querySelector(".section_contenido");
-console.log(image_profile);
+const modal = document.querySelector(".modalCart");
+const closeButton = document.getElementById("closeModal");
+console.log(modal);
 console.log(section_chats);
 
 const insertarImagenPerfil= (url) => {
     const figura = document.createElement('figure');
-    figura.id = 'btnCard';
     const imagen = document.createElement('img');
     imagen.src = url;
-    imagen.id = 'btnCard';
     imagen.alt = 'Imagen secundaria';
     figura.appendChild(imagen);
     image_profile.appendChild(figura);
@@ -70,11 +75,13 @@ const insertarChats = (contenedor,listaChats, listaUsuarios) => {
 };
     
 document.addEventListener("DOMContentLoaded", async () => {
+    
     user = await getUser();
     chat = await getUserChat();
     console.log(user);
     const user2= Array.from(user);
     const chat2 = Array.from(chat);
+    
     let index = user2.findIndex((item) => {
         return item.id === idUser;
     });
@@ -83,10 +90,21 @@ document.addEventListener("DOMContentLoaded", async () => {
         return item.recipientUser === idUser;
     });
     
+    insertarImagenPerfil(user2[index].image);
+
+    const image_profile2= Array.from((document.getElementsByClassName("image_profile")));
+    const imagenPerfil = image_profile2[0].firstChild;
+    
+    toggleModal(imagenPerfil,modal);
+    toggleModal(closeButton, modal);
+        
+        
+    
+
     console.log(chat2);
     console.log(index2);
-    console.log(user2[index].image);
-    insertarImagenPerfil(user2[index].image);
+    
+    
     
 
     if (chat ==[]){
