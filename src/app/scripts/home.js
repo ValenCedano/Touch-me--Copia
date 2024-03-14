@@ -1,4 +1,7 @@
 import '../styles/home.scss';
+import Swal from 'sweetalert2';
+
+
 import {
     getUser,
     getUserChat,
@@ -7,6 +10,7 @@ import {
 import {
     toggleModal,
 }from "../services/modalEdition";
+import endpoints from '../services/data';
 
 const { DateTime } = require("luxon");
 
@@ -19,6 +23,8 @@ const image_profile = document.querySelector(".image_profile");
 const section_chats = document.querySelector(".section_contenido");
 const modal = document.querySelector(".modalCart");
 const closeButton = document.getElementById("closeModal");
+const editarTexto = document.querySelector(".modificarNombre");
+
 console.log(modal);
 console.log(section_chats);
 
@@ -31,6 +37,21 @@ const insertarImagenPerfil= (url) => {
     image_profile.appendChild(figura);
 };
 
+const seccionTexto = (contenedor,listaUsuarios) => {
+    user = Array.from(listaUsuarios);
+    let index = listaUsuarios.findIndex((item) => {
+        return item.id === idUser;
+    });
+    contenedor.innerHTML = "";
+    contenedor.innerHTML += `
+    <h4>Tu nombre</h4>
+    <div class="edicion">
+    <p id="nombreUsuario">${user[index].name}</p>
+    <button class="botonEditarNombre">
+    <i class="fa-solid fa-pencil" style="color:black;"></i
+    </button>
+    </div>`
+};
 
 const insertarChats = (contenedor,listaChats, listaUsuarios) => {
     contenedor.innerHTML = "";
@@ -93,12 +114,64 @@ document.addEventListener("DOMContentLoaded", async () => {
     insertarImagenPerfil(user2[index].image);
 
     const image_profile2= Array.from((document.getElementsByClassName("image_profile")));
+    const editarNombre = document.getElementsByClassName("botonEditarNombre");
     const imagenPerfil = image_profile2[0].firstChild;
     
+    seccionTexto(editarTexto,user2);
     toggleModal(imagenPerfil,modal);
     toggleModal(closeButton, modal);
+    
+    const botonEdicionNombre = editarNombre[0];
+    const nombreEdicion = document.getElementById("nombreUsuario");
+    
+   
+    const Swal = require('sweetalert2');
+    
+    botonEdicionNombre.addEventListener("click", async () => {
+        console.log("Miau");
+        const { value: text } = await Swal.fire({
+            input: "text",
+            inputLabel: "Nombre",
+            inputPlaceholder: "Ingrese su nuevo nombre...",
+            inputAttributes: {
+              "aria-label": "Ingrese su nuevo nombre"
+            },
+            showCancelButton: true
+        });
+        if (text) {
+            Swal.fire(text);
+        };
+        nombreEdicion.textContent= text;
+
+    });
+
+    console.log(`${endpoints.user}/${idUser}`);
+
+    fetch(`${endpoints.user}/${idUser}`, {
+        method: 'PATH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name: nombreEdicion
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data); // Objeto actualizado
+    })
+    .catch(error => {
+        console.error('Error al enviar la solicitud:', error);
+    });
+    
+   
+   
+
         
-        
+    
+    
+
+    
     
 
     console.log(chat2);
