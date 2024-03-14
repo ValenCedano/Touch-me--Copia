@@ -148,12 +148,19 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.log(`${endpoints.user}/${idUser}`);
 
     fetch(`${endpoints.user}/${idUser}`, {
-        method: 'PATH',
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          name: nombreEdicion
+            id: idUser,
+            name: nombreEdicion,
+            phone: user2[index].phone,
+            password:  user2[index].password,
+            image:user2[index].image,
+            flag: user2[index].flag,
+            info: user2[index].info 
+
         })
     })
     .then(response => response.json())
