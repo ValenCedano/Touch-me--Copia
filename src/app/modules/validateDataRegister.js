@@ -1,10 +1,9 @@
 import {validateEmptyData} from "./validateEmpyData.js"
 
-
 export const validateDataRegister = (jsonData) => {
     const empty=validateEmptyData(jsonData);
     // console.log("empty",empty);
-    const linkRegex = /^(https?:\/\/)?[\da-z.-]+\.[a-z.]{2,6}$/
+    const linkRegex = /^(https?:\/\/)?[\da-z.-]+/;
     let errorFields = [];
     if (empty==false){
         const alerts=document.querySelectorAll(".alert");
@@ -27,9 +26,11 @@ export const validateDataRegister = (jsonData) => {
             errorFields.push("userPassword");
         }
 
+        return errorFields.length > 0 ? false : true;
+    }else{
+        return !empty;
     }
 
-    return errorFields.length > 0 ? false : true;
 };
 
 

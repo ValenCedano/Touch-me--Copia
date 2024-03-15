@@ -2,6 +2,8 @@ import '../styles/style.scss';
 
 import { getDataForm } from "../modules/getDataform.js";
 import {validateDataRegister} from "../modules/validateDataRegister.js";
+import endpoints from "../services/data.js";
+import {sendUserRegister} from "../services/userServices.js";
 
 // document.addEventListener("DOMContentLoaded", () => {
     let  contentMain= document.getElementById("content");
@@ -78,18 +80,18 @@ import {validateDataRegister} from "../modules/validateDataRegister.js";
             </form>
         </div>
         `;
-
         const form = document.getElementById("form");
-        form.addEventListener("submit", (event) => {
+        form.addEventListener("submit", async (event) => {
             event.preventDefault();
             const data = getDataForm(form);
-            console.log("data",data);
             const validated= validateDataRegister(data);
-            console.log("validation",validated);
             if(validated){
                 data.online=false;
                 data.info=data.info.trim();
-                console.log("data act",data)
+                console.log("data post",data)
+                const url=endpoints.users;
+                await sendUserRegister(url,data );
+                //aqui se hace el post
                 form.reset()
             }
         });

@@ -2,7 +2,6 @@
 @import './modules/universals.scss';
 
 
-
 h2{
     font-family: $logo-typography;
     font-size: 1.5em;
@@ -34,7 +33,7 @@ body{
     min-height: 100vh;
     font-size: 100%;
     line-height: 1.4em;
-    // background-image: url(../assets/images/backgroundLogin.png);
+    //background-image: url(../assets/images/backgroundLogin.png);
     background-color: $primary-color;
     background-repeat: no-repeat;
     background-position: center;
