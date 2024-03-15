@@ -3,7 +3,7 @@ import '../styles/style.scss';
 import { getDataForm } from "../modules/getDataform.js";
 import {validateDataRegister} from "../modules/validateDataRegister.js";
 import endpoints from "../services/data.js";
-import {sendUserRegister} from "../services/userServices.js";
+import {sendUserRegister,getUser} from "../services/userServices.js";
 
 // document.addEventListener("DOMContentLoaded", () => {
     let  contentMain= document.getElementById("content");
@@ -86,13 +86,22 @@ import {sendUserRegister} from "../services/userServices.js";
             const data = getDataForm(form);
             const validated= validateDataRegister(data);
             if(validated){
-                data.online=false;
-                data.info=data.info.trim();
-                console.log("data post",data)
-                const url=endpoints.users;
-                await sendUserRegister(url,data );
-                //aqui se hace el post
-                form.reset()
+                const existPhone= await getUser(endpoints.getAnUserByPhone(data.phone));
+                if(existPhone){
+                    alert("Phone number is alredy registered")
+                }
+                else{
+                    console.log("puedo hacer post")
+                    data.online=false;
+                    data.info=data.info.trim();
+                    await sendUserRegister(endpoints.users,data);
+                    alert("Successfully registered")
+                    form.reset()
+
+                }
+            }
+            else{
+                console.error("Invalid data")
             }
         });
     });
