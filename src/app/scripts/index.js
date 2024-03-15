@@ -5,6 +5,8 @@ import {validateDataRegister} from "../modules/validateDataRegister.js";
 import endpoints from "../services/data.js";
 import {sendUserRegister,getUser} from "../services/userServices.js";
 import { alertModal,valuesAlert } from '../modules/alert.js';
+import { validateDataLogin } from '../modules/validateDataLogin.js';
+
 
 document.addEventListener("DOMContentLoaded", () => {
     const contentMain= document.getElementById("content");
@@ -44,13 +46,21 @@ const chargeLogin=(contentMain)=>{
         chargeRegister(contentMain)
     });
     const form = document.getElementById("myForm");
-    form.addEventListener("submit", (event) => {
+    form.addEventListener("submit", async(event) => {
         event.preventDefault();
         const data = getDataForm(form);
         console.log("data",data);
-        // const validated= validateDataLogin(data);
-        // console.log("validation",validated);
-        // contentMain.innerHTML=`<p>Home</p>`
+        const userLogin= await validateDataLogin(data);
+        console.log("validation",userLogin);
+        if(userLogin){
+            localStorage.setItem("id_userLogin", userLogin.id);
+            valuesAlert.title=`Welcome ${userLogin.name}`;
+            valuesAlert.didClose=()=>{window.location.href = '"../../pages/home.html';}
+            form.reset();
+            setTimeout(function() {
+                alertModal(valuesAlert);
+            }, 500);
+        }
     });
 }
 

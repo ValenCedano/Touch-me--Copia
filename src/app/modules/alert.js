@@ -14,6 +14,7 @@ export const alertModal = (values)=>{
         icon: values.icon,
         showConfirmButton: values.showConfirmButton,
         timer: values.timer,
-      });    
+        didClose:values.didClose,
+    });    
 }
 

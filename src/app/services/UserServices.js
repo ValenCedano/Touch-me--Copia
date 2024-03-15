@@ -21,3 +21,7 @@ export const sendUserRegister = async (url, user) => {
         // return null
     }
 }
+
+export const updateUser= async(url,user)=>{
+
+}
