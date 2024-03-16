@@ -1,12 +1,17 @@
-import '../styles/style.scss';
-
 import { getDataForm } from "../modules/getDataform.js";
 import {validateDataRegister} from "../modules/validateDataRegister.js";
 import endpoints from "../services/data.js";
 import {sendUserRegister,getUser} from "../services/userServices.js";
 import { alertModal,valuesAlert } from '../modules/alert.js';
 import { validateDataLogin } from '../modules/validateDataLogin.js';
+import backgroudLogin from '../assets/images/backgroundLogin.png';
 
+import '../styles/style.scss';
+
+document.body.style.backgroundImage=`url(${backgroudLogin})`;
+document.body.style.backgroundSize="cover";
+document.body.style.backgroundPosition="center";
+document.body.style.backgroundRepeat="no-repeat";
 
 document.addEventListener("DOMContentLoaded", () => {
     const contentMain= document.getElementById("content");
