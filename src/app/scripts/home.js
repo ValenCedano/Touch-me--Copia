@@ -1,7 +1,7 @@
 import '../styles/home.scss';
 import Swal from 'sweetalert2';
-
-
+const axios = require('axios');
+import endpoints from '../services/data';
 import {
     getUser,
     getUserChat,
@@ -10,7 +10,8 @@ import {
 import {
     toggleModal,
 }from "../services/modalEdition";
-import endpoints from '../services/data';
+
+
 
 const { DateTime } = require("luxon");
 
@@ -94,6 +95,17 @@ const insertarChats = (contenedor,listaChats, listaUsuarios) => {
         </div>`
     });
 };
+
+const actualizarDatos = async (url, objeto) => {
+    try {
+        const { data } = await axios.put(url, objeto);
+        return data;
+    } catch (error) {
+        // Manejo de errores
+        console.error('Error al actualizar los datos:', error);
+        throw error;
+    }
+};
     
 document.addEventListener("DOMContentLoaded", async () => {
     
@@ -123,10 +135,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     
     const botonEdicionNombre = editarNombre[0];
     const nombreEdicion = document.getElementById("nombreUsuario");
-    
-   
     const Swal = require('sweetalert2');
-    
     botonEdicionNombre.addEventListener("click", async () => {
         console.log("Miau");
         const { value: text } = await Swal.fire({
@@ -142,44 +151,13 @@ document.addEventListener("DOMContentLoaded", async () => {
             Swal.fire(text);
         };
         nombreEdicion.textContent= text;
-
-    });
-
-    console.log(`${endpoints.user}/${idUser}`);
-
-    fetch(`${endpoints.user}/${idUser}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            id: idUser,
-            name: nombreEdicion,
-            phone: user2[index].phone,
-            password:  user2[index].password,
-            image:user2[index].image,
-            flag: user2[index].flag,
-            info: user2[index].info 
-
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log(data); // Objeto actualizado
-    })
-    .catch(error => {
-        console.error('Error al enviar la solicitud:', error);
-    });
-    
-   
-   
-
+        user2[index].name= text;
         
-    
-    
+        actualizarDatos(`${endpoints.user}/${idUser}`, user2[index]);
 
-    
-    
+
+    });
+
 
     console.log(chat2);
     console.log(index2);
