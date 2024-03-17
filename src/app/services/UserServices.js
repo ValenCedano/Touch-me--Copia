@@ -17,11 +17,14 @@ export const sendUserRegister = async (url, user) => {
         console.log('Respuesta del servidor:', data);
     } catch (error) {
         console.error('Error al realizar la solicitud:', error);
-        // console.log(error);
-        // return null
     }
 }
 
 export const updateUser= async(url,user)=>{
-
+    try {
+        const {data}= await axios.put(url,user);
+        console.log("Actualizado:", data);
+    } catch (error) {
+        console.error("Error actualizando",error);
+    }
 }

@@ -1,7 +1,7 @@
 import { getDataForm } from "../modules/getDataform.js";
 import {validateDataRegister} from "../modules/validateDataRegister.js";
 import endpoints from "../services/data.js";
-import {sendUserRegister,getUser} from "../services/userServices.js";
+import {sendUserRegister,getUser,updateUser} from "../services/userServices.js";
 import { alertModal,valuesAlert } from '../modules/alert.js';
 import { validateDataLogin } from '../modules/validateDataLogin.js';
 import backgroudLogin from '../assets/images/backgroundLogin.png';
@@ -62,6 +62,8 @@ const chargeLogin=(contentMain)=>{
             valuesAlert.title=`Welcome ${userLogin.name}`;
             valuesAlert.didClose=()=>{window.location.href = '"../../pages/home.html';}
             form.reset();
+            userLogin.online=true;
+            updateUser(endpoints.putAnUser(userLogin.id),userLogin);
             setTimeout(function() {
                 alertModal(valuesAlert);
             }, 500);
