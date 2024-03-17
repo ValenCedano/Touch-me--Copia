@@ -57,7 +57,9 @@ const chargeLogin=(contentMain)=>{
         const userLogin= await validateDataLogin(data);
         if(userLogin){
             localStorage.setItem("id_userLogin", userLogin.id);
-            valuesAlert.title=`Welcome ${userLogin.name}`;
+            // valuesAlert.title=`<h2>Touch World</h2>`;
+            // valuesAlert.text=`Welcome ${userLogin.name}`;
+            valuesAlert.title=`<h2>Welcome ${userLogin.name}<h2>`;
             valuesAlert.didClose=()=>{window.location.href = '"../../pages/home.html';}
             form.reset();
             userLogin.online=true;
