@@ -2,6 +2,34 @@
 @import './modules/universals.scss';
 
 
+form,
+input,textarea,
+button,p,
+label {
+    font-family: inherit;
+    display: block;
+    border: none;
+    background: none;
+    font-family: $typography-body;
+    font-size: 1em;
+    color: inherit;
+    resize: none;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+}
+body{
+    min-height: 100vh;
+    font-size: 100%;
+    line-height: 1.4em;
+    //background-image: url(../assets/images/backgroundLogin.png);
+    // background-color: $primary-color;
+    // background-repeat: no-repeat;
+    // background-position: center;
+    // background-size: cover;
+}
 h2{
     font-family: $logo-typography;
     font-size: 1.5em;
@@ -12,37 +40,10 @@ h1{
     font-family: $typography-title;
     font-size: 2.5em;
 }
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-}
-form,
-input,textarea,
-button,p,
-label {
-  font-family: inherit;
-  display: block;
-  border: none;
-  background: none;
-  font-family: $typography-body;
-  font-size: 1em;
-  color: inherit;
-  resize: none;
-}
 
-body{
-    min-height: 100vh;
-    font-size: 100%;
-    line-height: 1.4em;
-    //background-image: url(../assets/images/backgroundLogin.png);
-    // background-color: $primary-color;
-    // background-repeat: no-repeat;
-    // background-position: center;
-    // background-size: cover;
-
-}
 .navbar{
     display: flex;
+    justify-content: flex-start;
     align-items: center;
     background-color: $white-color;
     padding: 1rem;
@@ -50,8 +51,10 @@ body{
         text-align:left;
     }
     svg{
+        width: 1.5rem;
+        height: 1.3rem;
         color: $btn-submit-color;
-        margin-left: 2px;
+        margin-left: 5px;
     }
 }
 
@@ -70,15 +73,15 @@ main{
     box-shadow: 0px 2px 16px 0px rgba(20,250,188,1);
     border-radius: 1rem;
     padding: 2rem;
-    margin: 3rem auto auto auto;
+    margin: 5rem auto auto auto;
     h1{
-        margin:0rem 3rem 1rem 3rem;
+        margin:0rem auto 1rem auto;
         text-align: center;
         color: $primary-color;
     }
     #form{
         overflow-y: scroll;
-        height: 25rem;
+        height: 20rem;
         &::-webkit-scrollbar:vertical {
             width: 0.5rem;
         }
@@ -90,24 +93,29 @@ main{
             border-radius: 1.2rem;
             border: 1px solid $white-color;
         }
+        .form-group{
+            input , textarea{
+                width: calc(100% - 1rem);
+                margin: 0.5rem 1rem 0rem 0rem;    
+            }
+        }
     }
     .form-group{
         flex-direction: column;
         margin: 1rem 0rem;
         color:$primary-color;
         input , textarea{
-            width: calc(100% - 0.5rem);
+            width: 100%;
             background-color:$white-color;
             border-radius: 1rem;
-            margin: 0.5rem 0.5rem 0rem 0rem;
+            margin: 0.5rem 0rem 0rem 0rem;
             padding: 0rem 0.5rem;    
         }
         input{
             height: 1.5rem;
-        }
-        input:focus{
-            /* border: 2px solid var(--btn-submit-color); */
-            border: none;
+            &:focus{
+                border-color: 2px solid $primary-color;
+            }
         }
         span{
             color: $alert-span-color;
@@ -117,11 +125,15 @@ main{
         button{
             margin: 2rem auto 0rem auto;
             font-family: $typography-title;
-            font-size: 1.3em;
+            font-size: 1.2em;
             background-color: $primary-color;
             color: $white-color;
             border-radius: 1rem;
             padding: 0.5rem 1.5rem;
+            &:hover{
+                background-color: $btn-submit-color;
+                color: $primary-color;
+            }
         }            
         
     }
@@ -130,9 +142,87 @@ main{
         font-size: 0.875em;
         text-align: center;
         a{
+            cursor: pointer;
             color:$link-color;
             font-weight: 800;
         }
     }
+
+}
+
+@media screen and (max-width: 768px){
+    h1{
+        font-size: 2.3em;
+    }
+
+    h2{
+        font-size: 1.3em;
+    }
+
+    .navbar{
+        svg{
+            width: 1.3rem;
+            height: 1.1rem;
+        }
+    }
+
+    .container__form{
+        h1{
+            margin:0rem 3rem 0.75rem 3rem;
+        }
+    }
+
+}
+
+
+@media screen and (max-width: 600px){
+    .container__form{
+        width: 22rem;
+        #form::-webkit-scrollbar:vertical {
+        width: 0.4rem;
+        }
+    }
+    
+}
+
+@media screen and (max-width: 480px){
+    .navbar{
+        padding: 0.75rem;
+        h2{
+            font-size: 1.2em;
+            line-height: 1.2rem;
+        }
+        svg{
+            width: 1rem;
+            height: 0.9rem;
+            margin-left: 3px;
+        }
+    }
+
+    .container__form{
+        width: 18rem;
+        padding: 2rem 1.5rem;
+        margin: 5rem auto auto auto;
+        #form{
+            height: 20rem;
+            .form-group{
+                margin: 0.75rem 0rem;
+                input , textarea{
+                    width: calc(100% - 0.7rem);
+                    margin: 0.5rem 0.7rem 0rem 0rem;    
+                }
+            }
+        }
+        .form-group{
+            input{
+                height: 1.3rem;
+            }  
+        }
+        p{
+            font-size: 0.8em;
+            margin-bottom: 0.5rem;
+        }
+    }
+    
 
 }

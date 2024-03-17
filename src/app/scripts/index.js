@@ -54,9 +54,7 @@ const chargeLogin=(contentMain)=>{
     form.addEventListener("submit", async(event) => {
         event.preventDefault();
         const data = getDataForm(form);
-        console.log("data",data);
         const userLogin= await validateDataLogin(data);
-        console.log("validation",userLogin);
         if(userLogin){
             localStorage.setItem("id_userLogin", userLogin.id);
             valuesAlert.title=`Welcome ${userLogin.name}`;

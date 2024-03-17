@@ -18,7 +18,6 @@
             alert.textContent = "";
         });
         emptyfields.forEach((field)=>{
-            console.log(field);
             const alertEmpty=document.getElementById(`error${field.charAt(0).toUpperCase() + field.slice(1)}`);
             alertEmpty.innerHTML=`empty field`
         })

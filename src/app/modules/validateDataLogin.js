@@ -11,7 +11,7 @@ export const validateDataLogin = async(jsonData) => {
             alert.textContent = "";
         });
         const existPhone= await getUser(endpoints.getAnUserByPhone(jsonData.phone));
-        console.log("existPhone",existPhone);
+        // console.log("existPhone",existPhone);
         if(existPhone){
             if(!(jsonData.password ==existPhone.password)){
                 const alert=document.getElementById("errorPassword");
