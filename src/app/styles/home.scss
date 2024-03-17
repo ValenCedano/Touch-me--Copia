@@ -166,6 +166,11 @@
 }
 
 
+
+
+
+
+
 /* Parte Modal*/
 
 .modalCart{
@@ -228,13 +233,14 @@
     justify-content: flex-start;
 
     img{
-        border-radius: 50%;
-        margin-top: 2em;
-        width: 220px;
-        height: 220px;
-        align-items: center;
-        align-content: center;
-        align-self: center;
+      border-radius: 50%;
+      margin-top: 2em;
+      width: 220px;
+      height: 220px;
+      align-items: center;
+      align-content: center;
+      align-self: center;
+      z-index: 5;
     }
     
     h4{
@@ -270,9 +276,30 @@
             }
 
         };
-
         
     };
+
+
+    .botonEditarFotoUsuario{
+      color:black;
+      background-color: transparent;
+      width: 30px;
+      height: 30px;
+      border-style: none;
+      font-size: larger;
+      align-self: center;
+      position: absolute;
+      top: 10.8em;
+    }
+
+    #editarImagenPerfil:hover{
+      opacity: 0.3;
+      z-index: 1; 
+    }
+
+    
+  
+    
 }
 
 .hidden {

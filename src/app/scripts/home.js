@@ -25,6 +25,8 @@ const section_chats = document.querySelector(".section_contenido");
 const modal = document.querySelector(".modalCart");
 const closeButton = document.getElementById("closeModal");
 const editarTexto = document.querySelector(".modificarNombre");
+const editarFotoUsuario= document.getElementById("editarImagenPerfil");
+
 
 console.log(modal);
 console.log(section_chats);
@@ -106,88 +108,103 @@ const actualizarDatos = async (url, objeto) => {
         throw error;
     }
 };
-    
+
 document.addEventListener("DOMContentLoaded", async () => {
+  user = await getUser();
+  chat = await getUserChat();
+  console.log(user);
+  const user2= Array.from(user);
+  const chat2 = Array.from(chat);
+  
+  let index = user2.findIndex((item) => {
+      return item.id === idUser;
+  });
+
+  let index2 = chat2.findIndex((item) => {
+      return item.recipientUser === idUser;
+  });
+  
+  insertarImagenPerfil(user2[index].image);
+
+  const image_profile2= Array.from((document.getElementsByClassName("image_profile")));
+  const editarNombre = document.getElementsByClassName("botonEditarNombre");
+  const imagenPerfil = image_profile2[0].firstChild;
+  
+  seccionTexto(editarTexto,user2);
+  toggleModal(imagenPerfil,modal);
+  toggleModal(closeButton, modal);
+  
+  const botonEdicionNombre = editarNombre[0];
+  const nombreEdicion = document.getElementById("nombreUsuario");
+  const Swal = require('sweetalert2');
+  botonEdicionNombre.addEventListener("click", async () => {
+      console.log("Miau");
+      const { value: text } = await Swal.fire({
+          input: "text",
+          inputLabel: "Nombre",
+          inputPlaceholder: "Ingrese su nuevo nombre...",
+          inputAttributes: {
+            "aria-label": "Ingrese su nuevo nombre"
+          },
+          showCancelButton: true
+      });
+      if (text) {
+          Swal.fire(text);
+      };
+      nombreEdicion.textContent= text;
+      user2[index].name= text;
+      
+      actualizarDatos(`${endpoints.user}/${idUser}`, user2[index]);
+
+
+  });
+
+
+ 
+
+
+    //Editar foto de perfil
+
+  editarFotoUsuario.addEventListener("click", async () => {
     
-    user = await getUser();
-    chat = await getUserChat();
-    console.log(user);
-    const user2= Array.from(user);
-    const chat2 = Array.from(chat);
-    
-    let index = user2.findIndex((item) => {
-        return item.id === idUser;
+    console.log("Miau");
+    const { value: text } = await Swal.fire({
+        input: "text",
+        inputLabel: "Ruta de Imagen",
+        inputPlaceholder: "Ingrese su nuevo imagen de perfil...",
+        inputAttributes: {
+          "aria-label": "Ingrese su nuevo imagen de perfil"
+        },
+        showCancelButton: true
     });
-
-    let index2 = chat2.findIndex((item) => {
-        return item.recipientUser === idUser;
-    });
-    
-    insertarImagenPerfil(user2[index].image);
-
-    const image_profile2= Array.from((document.getElementsByClassName("image_profile")));
-    const editarNombre = document.getElementsByClassName("botonEditarNombre");
-    const imagenPerfil = image_profile2[0].firstChild;
-    
-    seccionTexto(editarTexto,user2);
-    toggleModal(imagenPerfil,modal);
-    toggleModal(closeButton, modal);
-    
-    const botonEdicionNombre = editarNombre[0];
-    const nombreEdicion = document.getElementById("nombreUsuario");
-    const Swal = require('sweetalert2');
-    botonEdicionNombre.addEventListener("click", async () => {
-        console.log("Miau");
-        const { value: text } = await Swal.fire({
-            input: "text",
-            inputLabel: "Nombre",
-            inputPlaceholder: "Ingrese su nuevo nombre...",
-            inputAttributes: {
-              "aria-label": "Ingrese su nuevo nombre"
-            },
-            showCancelButton: true
-        });
-        if (text) {
-            Swal.fire(text);
-        };
-        nombreEdicion.textContent= text;
-        user2[index].name= text;
-        
-        actualizarDatos(`${endpoints.user}/${idUser}`, user2[index]);
-
-
-    });
-
-
-    console.log(chat2);
-    console.log(index2);
-    
-    
-    
-
-    if (chat ==[]){
-        section_chats.innerHTML = "No hay chats";
-
-    }else {
-        insertarChats(section_chats,chat2,user2);
+    if (text) {
+        Swal.fire(text);
     };
-
-
+    editarNombre.textContent= text;
+    user2[index].image= text;
     
+    editarFotoUsuario.src = text;
+    actualizarDatos(`${endpoints.user}/${idUser}`, user2[index]);
+  });
+  editarFotoUsuario.src = user2[index].image;
 
-    
+  if (chat ==[]){
+      section_chats.innerHTML = "No hay chats";
+  }else {
+      insertarChats(section_chats,chat2,user2);
+  };
 
-
-
-    // Vamos a insertar los chats 
-    //insertarImagenPerfil(index.image)
+ 
     
     
     
 });
 
 
+section_chats.addEventListener("click", () => {
+  // Poner aquí para que aparezca los datos del chat..
 
+})
 
 
 
