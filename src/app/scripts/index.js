@@ -1,26 +1,30 @@
 import { getDataForm } from "../modules/getDataform.js";
-import {validateDataRegister} from "../modules/validateDataRegister.js";
+import { validateDataRegister } from "../modules/validateDataRegister.js";
 import endpoints from "../services/data.js";
-import {sendUserRegister,getUser,updateUser} from "../services/userServices.js";
-import { alertModal,valuesAlert } from '../modules/alert.js';
-import { validateDataLogin } from '../modules/validateDataLogin.js';
-import backgroudLogin from '../assets/images/backgroundLogin.png';
+import {
+  sendUserRegister,
+  getUser,
+  updateUser,
+  updateUserStatus,
+} from "../services/userServices.js";
+import { alertModal, valuesAlert } from "../modules/alert.js";
+import { validateDataLogin } from "../modules/validateDataLogin.js";
+import backgroudLogin from "../assets/images/backgroundLogin.png";
 
-import '../styles/style.scss';
+import "../styles/style.scss";
 
-document.body.style.backgroundImage=`url(${backgroudLogin})`;
-document.body.style.backgroundSize="cover";
-document.body.style.backgroundPosition="center";
-document.body.style.backgroundRepeat="no-repeat";
+document.body.style.backgroundImage = `url(${backgroudLogin})`;
+document.body.style.backgroundSize = "cover";
+document.body.style.backgroundPosition = "center";
+document.body.style.backgroundRepeat = "no-repeat";
 
 document.addEventListener("DOMContentLoaded", () => {
-    const contentMain= document.getElementById("content");
-    chargeLogin(contentMain);
-   
+  const contentMain = document.getElementById("content");
+  chargeLogin(contentMain);
 });
 
-const chargeLogin=(contentMain)=>{
-    contentMain.innerHTML=`
+const chargeLogin = (contentMain) => {
+  contentMain.innerHTML = `
     <div class="container__form init">                  
         <h1> Sing in</h1>        
 
@@ -45,34 +49,39 @@ const chargeLogin=(contentMain)=>{
         </p>
     </div>
     `;
-    const register=document.getElementById("register");
-    register.addEventListener("click", (event) => {
-        event.preventDefault();
-        chargeRegister(contentMain)
-    });
-    const form = document.getElementById("myForm");
-    form.addEventListener("submit", async(event) => {
-        event.preventDefault();
-        const data = getDataForm(form);
-        const userLogin= await validateDataLogin(data);
-        if(userLogin){
-            localStorage.setItem("id_userLogin", userLogin.id);
-            // valuesAlert.title=`<h2>Touch World</h2>`;
-            // valuesAlert.text=`Welcome ${userLogin.name}`;
-            valuesAlert.title=`<h2>Welcome ${userLogin.name}<h2>`;
-            valuesAlert.didClose=()=>{window.location.href = '"../../pages/home.html';}
-            form.reset();
-            userLogin.online=true;
-            updateUser(endpoints.putAnUser(userLogin.id),userLogin);
-            setTimeout(function() {
-                alertModal(valuesAlert);
-            }, 500);
-        }
-    });
-}
+  const register = document.getElementById("register");
+  register.addEventListener("click", (event) => {
+    event.preventDefault();
+    chargeRegister(contentMain);
+  });
+  const form = document.getElementById("myForm");
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const data = getDataForm(form);
+    const userLogin = await validateDataLogin(data);
+    if (userLogin) {
+      localStorage.setItem("id_userLogin", userLogin.id);
+      // valuesAlert.title=`<h2>Touch World</h2>`;
+      // valuesAlert.text=`Welcome ${userLogin.name}`;
+      valuesAlert.title = `<h2>Welcome ${userLogin.name}<h2>`;
+      valuesAlert.didClose = () => {
+        window.location.href = '"../../pages/home.html';
+      };
+      form.reset();
+      userLogin.online = true;
+      await updateUserStatus(
+        endpoints.putAnUser(userLogin.id),
+        userLogin.online
+      );
+      setTimeout(function () {
+        alertModal(valuesAlert);
+      }, 500);
+    }
+  });
+};
 
-const chargeRegister= (contentMain)=>{
-    contentMain.innerHTML=`
+const chargeRegister = (contentMain) => {
+  contentMain.innerHTML = `
     <div class="container__form">                  
         <h1> Register</h1>        
         <form id="form" >
@@ -108,39 +117,36 @@ const chargeRegister= (contentMain)=>{
         </form>
     </div>
     `;
-    const form = document.getElementById("form");
-    form.addEventListener("submit", async (event) => {
-        event.preventDefault();
-        const data = getDataForm(form);
-        const validated= validateDataRegister(data);
-        if(validated){
-            const existPhone= await getUser(endpoints.getAnUserByPhone(data.phone));
-            if(existPhone){
-                valuesAlert.title="Error registering";
-                valuesAlert.text="Phone number is alredy registered"
-                valuesAlert.icon="error";
-                valuesAlert.showConfirmButton=true;
-                alertModal(valuesAlert);
-            }
-            else{
-                data.online=false;
-                data.info=data.info.trim();
-                await sendUserRegister(endpoints.users,data);
-                valuesAlert.icon="success";
-                valuesAlert.timer=2000;
-                valuesAlert.title="Successfully registered";
-                form.reset();
-                setTimeout(function() {
-                    alertModal(valuesAlert);
-                }, 500);
-                setTimeout(function() {
-                    chargeLogin(contentMain);
-                }, 2500);
-
-            }
-        }
-        else{
-            console.error("Invalid data")
-        }
-    });
-}
+  const form = document.getElementById("form");
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const data = getDataForm(form);
+    const validated = validateDataRegister(data);
+    if (validated) {
+      const existPhone = await getUser(endpoints.getAnUserByPhone(data.phone));
+      if (existPhone) {
+        valuesAlert.title = "Error registering";
+        valuesAlert.text = "Phone number is alredy registered";
+        valuesAlert.icon = "error";
+        valuesAlert.showConfirmButton = true;
+        alertModal(valuesAlert);
+      } else {
+        data.online = false;
+        data.info = data.info.trim();
+        await sendUserRegister(endpoints.users, data);
+        valuesAlert.icon = "success";
+        valuesAlert.timer = 2000;
+        valuesAlert.title = "Successfully registered";
+        form.reset();
+        setTimeout(function () {
+          alertModal(valuesAlert);
+        }, 500);
+        setTimeout(function () {
+          chargeLogin(contentMain);
+        }, 2500);
+      }
+    } else {
+      console.error("Invalid data");
+    }
+  });
+};

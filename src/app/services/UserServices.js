@@ -28,3 +28,12 @@ export const updateUser= async(url,user)=>{
         console.error("Error actualizando",error);
     }
 }
+
+export const updateUserStatus= async(url,userStatus)=>{
+    try {
+        const {data}= await axios.patch(url,{online:userStatus});
+        console.log("Actualizado:", data);
+    } catch (error) {
+        console.error("Error actualizando",error);
+    }
+}
