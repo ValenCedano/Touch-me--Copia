@@ -66,91 +66,99 @@
 
     
     <div class="chat-container">
-        <div class="chat-header">
-          <div>
-            <h2>Josefa</h2>
-            <div class="status">En Línea</div>
-            <figure>
-              <img  class="img-chat-container" src="" alt="">
-            </figure>
-          </div>
-          <div class="chat-actions">
-            <!-- Colocar acciones del chat -->
-          </div>
-        </div>
-       
-        <div class="chat-body" id="chatMessages">
-          <!-- bloque para cada mensaje -->
-          
-          <div>   
-            <h4> Jueves </h4></div>
-          <div class="message-received">
-            ¿Me puedes mandar la ubicación?
-            
-          </div>
-          <div class="message-sent">
-            Porsupuesto
-          <button>^</button>
-          </div>   
-        </div>
-        
-        <div id="message-menu" class="message-menu" style="display: none;">
-          <ul>
-            <li>Info. del mensaje</li>
-            <li>Responder</li>
-            <li>Reaccionar</li>
-            <li>Reenviar</li>
-            <li data-action="edit">Editar</li>
-            <li>Destacar</li>
-            <li data-action="delete">Eliminar</li>
-          </ul>
-        </div>
-      
-        <div id="edit-message-modal" class="modal" style="display: none;">
-          <div class="modal-content">
-            <span class="close-button">&times;</span>
-            <textarea id="message-to-edit"></textarea>
-            <button type="button" id="save-message">Guardar</button>
-          </div>
-        </div>
-      
-        <div id="delete-message-modal" class="modal" style="display: none;">
-          <!-- Contenido del modal -->
-          <div class="modal-content">
-            <p>¿Deseas eliminar este mensaje?</p>
-            <button id="delete-for-everyone">Eliminar</button>
-            <button id="cancel-delete">Cancelar</button>
-          </div>
-        </div>
-        
-      
-        <div class="chat-footer">
-          <div class="chat-icons">
-            <i class="far fa-smile"></i>
-            <i class="fas fa-paperclip"></i>
-          </div>
-          <input type="text" placeholder="Escribe un mensaje">
+      <div class="chat-header">
+        <div>
+          <h2>Bienvenido</h2>
+          <div class="status">En Línea</div>
           <figure>
-            <img class="icon-sent"  src="" alt="">
+            <img  class="img-chat-container" src="" alt="">
           </figure>
         </div>
+        <div class="chat-actions">
+          <!-- Colocar acciones del chat -->
+        </div>
+      </div>
+     
+      <div class="chat-body" id="chatMessages">
+        <!-- bloque para cada mensaje -->
+        
+        <div>   
+          <h4> Jueves </h4></div>
+        <div class="message-received">
+          ¿Me puedes mandar la ubicación?
+          
+        </div>
+        <div class="message-sent">
+          Porsupuesto
+        <button>^</button>
+        </div>   
+      </div>
       
-        <div class="chat-detail-container">
-          <div class="chat-detail-header">
-            <h2>Mensajes con Josefa</h2>
-            <button class="chat-close-button">&times;</button>
-          </div>
-          <div class="chat-search">
-            <figure class="icon-search-chat">
-              <img src="" alt="" />
-            </figure>
-            <input type="search" id="searchMessages" placeholder="Buscar en los mensajes" />
-            <button type="button" onclick="searchMessages()">Buscar</button>
-          </div>
-          <div class="chat-detail-body">
-            
-          </div>
-        </div> 
+      <div id="message-menu" class="message-menu hidden">
+        <ul>
+          <li>Info. del mensaje</li>
+          <li>Responder</li>
+          <li>Reaccionar</li>
+          <li>Reenviar</li>
+          <li data-action="edit">Editar</li>
+          <li>Destacar</li>
+          <li data-action="delete">Eliminar</li>
+        </ul>
+      </div>
+    
+      <div id="edit-message-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+          <span class="close-button">&times;</span>
+          <textarea id="message-to-edit"></textarea>
+          <figure>
+            <img src=""
+            width="50"
+            height="50" alt="">
+          </figure>
+          <button type="button" id="save-message">Guardar</button>
+        </div>
+      </div>
+    
+      <div id="delete-message-modal" class="modal" style="display: none;">
+        <!-- Contenido del modal -->
+        <div class="modal-content">
+          <p>¿Deseas eliminar este mensaje?</p>
+          <button id="delete-for-everyone">Eliminar</button>
+          <button id="cancel-delete">Cancelar</button>
+        </div>
+      </div>
+      
+    
+      <div class="chat-footer">
+        <div class="chat-icons">
+          <i class="far fa-smile"></i>
+          <i class="fas fa-paperclip"></i>
+        </div>
+        <form id="sendMessage">
+          <input id="newMessage" type="text" placeholder="Escribe un mensaje">
+          <button> > </button>
+        </form>
+        <figure>
+          <img class="icon-sent"  src="" alt="">
+        </figure>
+      </div>
+    
+      <div class="chat-detail-container">
+        <div class="chat-detail-header">
+          <h2>Buscar mensajes</h2>
+          <button class="chat-close-button">&times;</button>
+        </div>
+        <div class="chat-search">
+          <figure class="icon-search-chat">
+            <img src="" alt="" />
+          </figure>
+          <input type="search" id="searchMessages" placeholder="Buscar en los mensajes" />
+          <button type="button" class="button-seaech--chat" onclick="searchMessages()">Buscar</button>
+        </div>
+        <div class="chat-detail-body">
+          
+        </div>
+      </div> 
     </div>
 
 

@@ -18,6 +18,7 @@ const { DateTime } = require("luxon");
 //const idProducto = JSON.parse(localStorage.getItem("idProduct"))
 let user;
 let chat;
+let selectedConversation;
 const idUser = "13e45i";
 
 const image_profile = document.querySelector(".image_profile");
@@ -28,7 +29,9 @@ const editarTexto = document.querySelector(".modificarNombre");
 const editarFotoUsuario= document.getElementById("editarImagenPerfil");
 const buscador = document.getElementsByClassName("search");
 const inputBusqueda = document.querySelector('.chat-input');
-
+const conversationContainer = document.getElementById("chatMessages");
+const menu = document.getElementById("message-menu");
+const messageForm = document.getElementById("sendMessage");
 console.log(inputBusqueda)
 console.log(buscador[0].children)
 
@@ -115,6 +118,89 @@ const actualizarDatos = async (url, objeto) => {
     }
 };
 
+const imprimirConversacion = ({ container, listaConversaciones, userId }) => {
+  container.innerHTML = "";
+  listaConversaciones.forEach((item, index) => {
+    container.innerHTML += `
+    ${
+      index > 0 && item.date == listaConversaciones[index - 1].date
+        ? ""
+        : `
+      <div>   
+        <h4>${item.date}</h4>
+      </div>
+      `
+    }
+    
+    <div class=${item.sendBy == userId ? "message-sent" : "message-received"}>
+      ${item.message}
+      ${
+        item.sendBy == userId
+          ? `<button name=${index} class='actions'>^</button>`
+          : ""
+      }           
+    </div>
+    `;
+  });
+};
+
+let messageToEdit = "";
+
+messageForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const newMessageInput = document.getElementById("newMessage");
+  if (newMessageInput.value.trim() !== "") {
+    selectedConversation.conversations.push({
+      sendBy: idUser,
+      date: new Date().toLocaleDateString(),
+      hour: `${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`,
+      message: newMessageInput.value,
+      flag: false,
+    });
+    await sendAMessage(
+      selectedConversation.id,
+      selectedConversation.conversations
+    );
+
+    imprimirConversacion({
+      container: conversationContainer,
+      listaConversaciones: selectedConversation.conversations,
+      userId: idUser,
+    });
+  }
+});
+
+document.addEventListener("click", (event) => {
+  if (event.target.classList.contains("actions")) {
+    console.log("Se debe mostrar la lista de opciones");
+    const indexMessage = event.target.getAttribute("name");
+
+    // // Calcula la posición  del menú basada en la posición del click y el contenedor del chat
+    const chatContainerRect = document
+      .querySelector(".chat-container")
+      .getBoundingClientRect();
+
+    const relativeX = event.clientX - chatContainerRect.left;
+    const relativeY = event.clientY - chatContainerRect.top;
+
+    // // Muestra el menú y lo posiciona
+    // menu.style.display = "block";
+    menu.style.left = `${relativeX}px`;
+    menu.style.top = `${relativeY}px`;
+    menu.classList.toggle("hidden");
+
+    // Guarda la referencia del mensaje a editar
+    messageToEdit = selectedConversation.conversations[indexMessage].message;
+  }
+
+  //Para editar el mensaje
+  if (event.target.getAttribute("data-action") == "edit") {
+    console.log("Quiero editar");
+    console.log(messageToEdit);
+  }
+});
+
+
 const form =Array.from( buscador[0].children);
 const botonBuscador = form[0].children;
 const buscadorBoton = botonBuscador[1];
@@ -134,7 +220,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   let index2 = chat2.findIndex((item) => {
       return item.recipientUser === idUser;
   });
-  
+  const Swal = require('sweetalert2');
   insertarImagenPerfil(user2[index].image);
   buscadorBoton.addEventListener("click", (event) => {
     event.preventDefault(); 
@@ -181,7 +267,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
     // Si el usuario no se encuentra, mostrar un mensaje de alert
     if (!usuarioEncontrado) {
-      alert("Usuario no encontrado");
+      Swal.fire("Usuario no encontrado");
+
     }
   });
     
@@ -196,7 +283,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   
   const botonEdicionNombre = editarNombre[0];
   const nombreEdicion = document.getElementById("nombreUsuario");
-  const Swal = require('sweetalert2');
+  
   botonEdicionNombre.addEventListener("click", async () => {
       
       const { value: text } = await Swal.fire({
@@ -216,19 +303,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       
       actualizarDatos(`${endpoints.user}/${idUser}`, user2[index]);
 
-
-      
-
-
   });
-
-  
-
-  
-
-  
-
- 
 
 
     //Editar foto de perfil
@@ -265,164 +340,82 @@ document.addEventListener("DOMContentLoaded", async () => {
  
     
     
-    
 });
 
 
-section_chats.addEventListener("click", () => {
+section_chats.addEventListener("click", async (event) => {
   // Poner aquí para que aparezca los datos del chat..
 
-})
+  if (event.target.getAttribute("data-conversation")) {
+    //Obtener el id de la conversación
+    const conversationId = event.target.getAttribute("data-conversation");
+    //Obtener toda la conversación
+    selectedConversation = await getAConversation(conversationId);
+    // console.log(selectedConversation.conversations);
+    imprimirConversacion({
+      container: conversationContainer,
+      listaConversaciones: selectedConversation.conversations,
+      userId: idUser,
+    });
+  }
+});
 
 
-
-
-//const insertarImagenPerfil = (contenedor, listaUsuarios)
-
-
-
-
-/*
-<div class="image_profile">
-                <figure id="btnCard">
-                    <img
-                    src="https://img.freepik.com/foto-gratis/perrito-joven-posando-alegre_155003-28765.jpg"
-                    alt = "Imagen_profile"
-                    width="50"
-                    height="50"/>
-
-                </figure>
-            </div>
-*/
 
 
 ////// Parte sara ////
-document.addEventListener('DOMContentLoaded', () => {
-    // Selecciona todos los elementos de mensaje
-    const messages = document.querySelectorAll('.message-sent');
-  
-    // Variable global para el mensaje actual a editar
-    let messageToEdit = null;
-  
-    messages.forEach(message => {
-      // Agrega un evento de clic a cada mensaje para mostrar el menú contextual
-      message.addEventListener('click', (event) => {
-        // Impide que se cierre el menú contextual inmediatamente debido al evento de click del window
-        event.stopPropagation();
-  
-        const menu = document.getElementById('message-menu');
-  
-        // Calcula la posición  del menú basada en la posición del click y el contenedor del chat
-        const chatContainerRect = document.querySelector('.chat-container').getBoundingClientRect();
-  
-        const relativeX = event.clientX - chatContainerRect.left;
-        const relativeY = event.clientY - chatContainerRect.top;
-  
-        // Muestra el menú y lo posiciona
-        menu.style.display = 'block';
-        menu.style.left = `${relativeX}px`;
-        menu.style.top = `${relativeY}px`;
-  
-        // Guarda la referencia del mensaje a editar
-        messageToEdit = message;
+document.addEventListener("DOMContentLoaded", () => {
+  // Agregar evento  al icono de lupa para mostrar el chat-detail-container
+  const searchIcon = document.querySelector(".img-chat-container");
+  const chatDetailContainer = document.querySelector(".chat-detail-container");
+
+  searchIcon.addEventListener("click", () => {
+    // Mostrar chat-detail-container
+    chatDetailContainer.style.display = "flex";
+  });
+
+  // Agregar event listener al botón de cierre del chat-detail-container para ocultarlo
+  const closeButton = document.querySelector(".chat-close-button");
+  closeButton.addEventListener("click", () => {
+    // Ocultar chat-detail-container
+    chatDetailContainer.style.display = "none";
+  });
+});
+
+//codigo de modal eliminar
+
+document.addEventListener("DOMContentLoaded", () => {
+  let messageToDelete = null;
+
+  // Selecciona el modal y los botones
+  const deleteModal = document.getElementById("delete-message-modal");
+  const deleteButton = document.getElementById("delete-for-everyone"); // Suponiendo que este es el botón de eliminar
+  const cancelButton = document.getElementById("cancel-delete");
+
+  // Asigna evento a cada mensaje para el botón eliminar
+  document
+    .querySelectorAll('.message-menu li[data-action="delete"]')
+    .forEach((deleteOption) => {
+      deleteOption.addEventListener("click", function () {
+        messageToDelete = this.closest(".message"); // Encuentra el mensaje correspondiente al menú
+        deleteModal.style.display = "block"; // Muestra el modal de confirmación
       });
     });
-  
-    // Evento para el botón editar en el menú contextual
-    document.querySelector('li[data-action="edit"]').addEventListener('click', () => {
-      // Muestra la ventana modal para editar
-      const modal = document.getElementById('edit-message-modal');
-      modal.style.display = 'block';
-  
-      // Llena el textarea con el contenido actual del mensaje
-      const textarea = document.getElementById('message-to-edit');
-      textarea.value = messageToEdit.textContent.trim();
-  
-      // Cierra el menú contextual
-      document.getElementById('message-menu').style.display = 'none';
-    });
-  
-    // Evento para el botón guardar en la ventana modal
-    document.getElementById('save-message').addEventListener('click', () => {
-      // Actualiza el contenido del mensaje y cierra la ventana modal
-      if (messageToEdit) {
-        messageToEdit.textContent = document.getElementById('message-to-edit').value.trim();
-        document.getElementById('edit-message-modal').style.display = 'none';
-      }
-    });
-  
-    // Cierra la ventana modal al hacer clic en el botón de cerrar
-    document.querySelector('.close-button').addEventListener('click', () => {
-      document.getElementById('edit-message-modal').style.display = 'none';
-    });
-  
-    // Evento para cerrar la ventana modal si se hace clic fuera de ella
-    window.addEventListener('click', (event) => {
-      const modal = document.getElementById('edit-message-modal');
-      if (event.target === modal) {
-        modal.style.display = 'none';
-      }
-    });
-  
-    // Evento para cerrar el menú contextual si se hace clic fuera de él
-    window.addEventListener('click', () => {
-      const menu = document.getElementById('message-menu');
-      if (menu.style.display === 'block') {
-        menu.style.display = 'none';
-      }
-    });
+
+  // Evento  para el botón de eliminar en el modal
+  deleteButton.addEventListener("click", () => {
+    if (messageToDelete) {
+      messageToDelete.remove(); // Elimina el mensaje del DOM
+      // Aquí podrías agregar lógica adicional para manejar la eliminación del mensaje en el backend
+    }
+    deleteModal.style.display = "none"; // Cierra el modal de confirmación
   });
-  
-  
-  document.addEventListener('DOMContentLoaded', () => {
-    
-    // Agregar evento  al icono de lupa para mostrar el chat-detail-container
-    const searchIcon = document.querySelector('.img-chat-container');
-    const chatDetailContainer = document.querySelector('.chat-detail-container');
-  
-    searchIcon.addEventListener('click', () => {
-      // Mostrar chat-detail-container
-      chatDetailContainer.style.display = 'flex';
-    });
-  
-    // Agregar event listener al botón de cierre del chat-detail-container para ocultarlo
-    const closeButton = document.querySelector('.chat-close-button');
-    closeButton.addEventListener('click', () => {
-      // Ocultar chat-detail-container
-      chatDetailContainer.style.display = 'none';
-    });
-  
+
+  // Disque Evento para el botón de cancelar en el modal
+  cancelButton.addEventListener("click", () => {
+    deleteModal.style.display = "none"; // Simplemente cierra el modal sin eliminar nada
   });
-  
-  //codigo de modal eliminar
-  
-  document.addEventListener('DOMContentLoaded', () => {
-    let messageToDelete = null; 
-  
-    // Selecciona el modal y los botones
-    const deleteModal = document.getElementById('delete-message-modal');
-    const deleteButton = document.getElementById('delete-for-everyone'); // Suponiendo que este es el botón de eliminar
-    const cancelButton = document.getElementById('cancel-delete');
-  
-    // Asigna evento a cada mensaje para el botón eliminar
-    document.querySelectorAll('.message-menu li[data-action="delete"]').forEach(deleteOption => {
-      deleteOption.addEventListener('click', function() {
-        messageToDelete = this.closest('.message'); // Encuentra el mensaje correspondiente al menú
-        deleteModal.style.display = 'block'; // Muestra el modal de confirmación
-      });
-    });
-  
-    // Evento  para el botón de eliminar en el modal
-    deleteButton.addEventListener('click', () => {
-      if (messageToDelete) {
-        messageToDelete.remove(); // Elimina el mensaje del DOM
-        // Aquí podrías agregar lógica adicional para manejar la eliminación del mensaje en el backend
-      }
-      deleteModal.style.display = 'none'; // Cierra el modal de confirmación
-    });
-  
-    // Disque Evento para el botón de cancelar en el modal
-    cancelButton.addEventListener('click', () => {
-      deleteModal.style.display = 'none'; // Simplemente cierra el modal sin eliminar nada
-    });
-  });
+});
+
+
+//Evento para buscar los mensajes en el boton del chat
