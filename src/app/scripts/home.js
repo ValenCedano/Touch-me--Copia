@@ -9,7 +9,7 @@ import {
 
 import {
     toggleModal,
-}from "../services/modalEdition";
+}from "../services/modalEdition2";
 
 
 
