@@ -63,12 +63,11 @@
 
         }
         button{
-            border-color: none;
-            border-style: hidden;
-            background-color:aliceblue;
-            margin-top: 1.4px;
-            margin-left: -30px;
-            height: 23px;
+          border-style: hidden;
+          background-color: aliceblue;
+          margin-top: 3.4px;
+          margin-left: -30px;
+          height: 18px;
             
         }
     }
@@ -80,6 +79,7 @@
 .section_contenido {
     display: flex;
     flex-direction: row;
+    margin-right: 5px;
 
     figure img{
         margin-left: 1.4em;
@@ -101,13 +101,14 @@
             align-items: center;
             align-content: center;
             justify-content: space-between;
-            margin-right: 1em;
+            
 
             p{
                 font-family:$typography-body;
             }
 
             h6 {
+            
                 font-family:$typography-body;
                 font-size:small;
                 font-weight: 400;

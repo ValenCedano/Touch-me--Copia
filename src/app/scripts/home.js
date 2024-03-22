@@ -26,6 +26,11 @@ const modal = document.querySelector(".modalCart");
 const closeButton = document.getElementById("closeModal");
 const editarTexto = document.querySelector(".modificarNombre");
 const editarFotoUsuario= document.getElementById("editarImagenPerfil");
+const buscador = document.getElementsByClassName("search");
+const inputBusqueda = document.querySelector('.chat-input');
+
+console.log(inputBusqueda)
+console.log(buscador[0].children)
 
 
 console.log(modal);
@@ -57,7 +62,7 @@ const seccionTexto = (contenedor,listaUsuarios) => {
 };
 
 const insertarChats = (contenedor,listaChats, listaUsuarios) => {
-    contenedor.innerHTML = "";
+    
     listaChats.forEach(element => {
         let idSendUser = element.sendUser;
         user = Array.from(listaUsuarios);
@@ -65,7 +70,7 @@ const insertarChats = (contenedor,listaChats, listaUsuarios) => {
             return item.id === idSendUser;
         });
         const ultimoMensaje = element.conversations[element.conversations.length - 1];
-        const fechaHoraUltimoMensaje = `${ultimoMensaje.date}T${ultimoMensaje.hour}`;
+        const fechaHoraUltimoMensaje = `${ultimoMensaje.date}`;
         
         // Parsea la fecha y hora utilizando Luxo
         
@@ -74,7 +79,7 @@ const insertarChats = (contenedor,listaChats, listaUsuarios) => {
         const diaSemana = dateTimeUltimoMensaje.toLocaleString({ weekday: "long" });
         const flag = ultimoMensaje.flag ? "true" : "false";
 
-        contenedor.innerHTML += `<figure>
+        contenedor.innerHTML = ` <figure>
         <img 
         src="${user[index].image}"
         width="50"
@@ -82,8 +87,8 @@ const insertarChats = (contenedor,listaChats, listaUsuarios) => {
         </figure>
         <div class ="contenedor2">
         <div class="informacionPersona">
-        <p style="width:100%;" ><strong> ${user[index].name}</strong> </p> 
-        <h6> <b>${diaSemana.charAt(0).toUpperCase() + diaSemana.slice(1).toLowerCase()}</b> <h6>
+        <p style="width:76%;" ><strong> ${user[index].name}</strong> </p> 
+        <h6> <b>${fechaHoraUltimoMensaje}</b> <h6>
         </div>
         <div class="informacionChat">
         <figure class="check-figure" data-flag="${flag}">
@@ -94,7 +99,8 @@ const insertarChats = (contenedor,listaChats, listaUsuarios) => {
         </figure>
         <h6> ${element.conversations[element.conversations.length - 1].message}<h6>
         </div>
-        </div>`
+        </div>
+        `
     });
 };
 
@@ -105,9 +111,14 @@ const actualizarDatos = async (url, objeto) => {
     } catch (error) {
         // Manejo de errores
         console.error('Error al actualizar los datos:', error);
-        throw error;
+        
     }
 };
+
+const form =Array.from( buscador[0].children);
+const botonBuscador = form[0].children;
+const buscadorBoton = botonBuscador[1];
+
 
 document.addEventListener("DOMContentLoaded", async () => {
   user = await getUser();
@@ -125,7 +136,56 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
   
   insertarImagenPerfil(user2[index].image);
+  buscadorBoton.addEventListener("click", (event) => {
+    event.preventDefault(); 
+    const valorBusqueda = inputBusqueda.value;
+    console.log(valorBusqueda);
 
+    let usuarioEncontrado = false; // Variable para verificar si el usuario fue encontrado
+
+    user2.forEach((elemento) => {
+
+      if (elemento.name === valorBusqueda) {
+        console.log("miau");
+        console.log(elemento.id);
+        const indexUser = user2.findIndex(user => user.id === elemento.id);
+        const indexMessages = chat2.findIndex(chat => chat.sendUser === elemento.id);
+        const ultimoMensaje = chat2[indexMessages].conversations[chat2[indexMessages].conversations.length - 1];
+        console.log(indexMessages)
+        const fechaHoraUltimoMensaje = `${ultimoMensaje.date}`;
+        const flag = ultimoMensaje.flag ? "true" : "false";
+
+
+        section_chats.innerHTML = `<figure>
+        <img src="${user2[indexUser].image}" 
+        width="50" height="50"/>
+        </figure>
+        <div class ="contenedor2">
+        <div class="informacionPersona">
+        <p style="width:76%;" ><strong>${user2[indexUser].name}</strong></p> 
+        <h6><b>${fechaHoraUltimoMensaje}</b></h6>
+        </div>
+        <div class="informacionChat">
+            <figure class="check-figure" data-flag="${flag}">
+                <i class="fa-solid fa-check"></i>
+            </figure>
+            <figure class="check-figure" data-flag="${flag}">
+                <i class="fa-solid fa-check"></i>
+            </figure>
+            <h6>${ultimoMensaje.message}</h6>
+        </div>
+        </div>`;
+        usuarioEncontrado = true; // Establecer la bandera de usuario encontrado a true
+
+      }
+    });
+    // Si el usuario no se encuentra, mostrar un mensaje de alert
+    if (!usuarioEncontrado) {
+      alert("Usuario no encontrado");
+    }
+  });
+    
+    
   const image_profile2= Array.from((document.getElementsByClassName("image_profile")));
   const editarNombre = document.getElementsByClassName("botonEditarNombre");
   const imagenPerfil = image_profile2[0].firstChild;
@@ -138,7 +198,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const nombreEdicion = document.getElementById("nombreUsuario");
   const Swal = require('sweetalert2');
   botonEdicionNombre.addEventListener("click", async () => {
-      console.log("Miau");
+      
       const { value: text } = await Swal.fire({
           input: "text",
           inputLabel: "Nombre",
@@ -157,8 +217,16 @@ document.addEventListener("DOMContentLoaded", async () => {
       actualizarDatos(`${endpoints.user}/${idUser}`, user2[index]);
 
 
+      
+
+
   });
 
+  
+
+  
+
+  
 
  
 
@@ -167,7 +235,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   editarFotoUsuario.addEventListener("click", async () => {
     
-    console.log("Miau");
+   
     const { value: text } = await Swal.fire({
         input: "text",
         inputLabel: "Ruta de Imagen",
